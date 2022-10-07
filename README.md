@@ -276,6 +276,7 @@ coverImg: /assets/images/news_img1.png
 ---
 name: San Zhang 
 type: Master
+startYear: 2021
 sortWeight: 1
 homePage: 
 email: 123456789@xx.com
