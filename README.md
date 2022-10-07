@@ -329,7 +329,7 @@ avatarUrl: /assets/images/SanZhang.jpeg
 
 那么 `张三` 的个人主页将会渲染成如下样式：
 
-![](assets/images/otherImg/SanZhangDemo.png)
+![](/assets/images/otherImg/SanZhangDemo.png)
 
 ## 6. 新增一个研究方向
 
