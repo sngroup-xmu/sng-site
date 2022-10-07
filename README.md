@@ -280,7 +280,7 @@ sortWeight: 1
 homePage: 
 email: 123456789@xx.com
 ResearchFields: Direction1 Direction2 Direction3
-avatarUrl: /assets/images/otherImg/SanZhangDemo.png
+avatarUrl: /assets/images/peopleImg/SanZhang.png
 ---
 ```
 
