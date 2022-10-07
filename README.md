@@ -270,7 +270,7 @@ coverImg: /assets/images/news_img1.png
 
 ## 5. 新增一位成员
 
-加入你要新增一位名为 `张三` 的成员，这时你需要进入 `_authors` 文件夹并创建一个 `Markdown` 文件，命名为 `SanZhang.md`，在该文件中添加如下头信息：
+假如你要新增一位名为 `张三` 的成员，这时你需要进入 `_authors` 文件夹并创建一个 `Markdown` 文件，命名为 `SanZhang.md`，在该文件中添加如下头信息：
 
 ```yml
 ---
