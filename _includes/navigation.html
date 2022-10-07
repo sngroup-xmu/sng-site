@@ -1,0 +1,24 @@
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target="#example-navbar-collapse">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+		  </button>
+      <a class="navbar-brand" href="/" style="text-align: center; padding: 6px 15px;">
+        <img src="/assets/images/ava.png" width="40" height="40" alt="" class="d-inline-block align-top" style="display: inline-block; vertical-align: middle;"> SNG
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="example-navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+            {% for item in site.data.navigation %}
+              <li {% if page.url == item.link %}class="active"{% endif %}><a href="{{ item.link }}">{{ item.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+	</div>
+</nav>

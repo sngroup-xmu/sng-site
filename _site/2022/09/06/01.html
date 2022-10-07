@@ -1,0 +1,250 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SIGCOMM 2022 阅读评述（六）</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script> -->
+    <script src="/assets/js/jquery-3.2.1.min.js"></script>
+
+    <!-- <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">   -->
+    <link rel="stylesheet" href="/assets/css/bootstrap/bootstrap.min.css">  
+
+    <!-- <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/dedault/default.css">
+
+    <link rel="icon" href="/assets/images/ava.png">
+  </head>
+  <body style="margin-top: 80px;">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target="#example-navbar-collapse">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+		  </button>
+      <a class="navbar-brand" href="/" style="text-align: center; padding: 6px 15px;">
+        <img src="/assets/images/ava.png" width="40" height="40" alt="" class="d-inline-block align-top" style="display: inline-block; vertical-align: middle;"> SNG
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="example-navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+            
+              <li ><a href="/">Home</a></li>
+            
+              <li ><a href="/people.html">People</a></li>
+            
+              <li ><a href="/research.html">Research</a></li>
+            
+              <li ><a href="/publication.html">Publication</a></li>
+            
+              <li ><a href="/news.html">News</a></li>
+            
+              <li ><a href="/contact.html">Contact</a></li>
+            
+        </ul>
+    </div>
+	</div>
+</nav>
+    <!-- <h1>SIGCOMM 2022 阅读评述（六）</h1>
+
+<p>
+  06 Sep 2022
+  
+  
+</p> -->
+
+
+
+<div class="container" style="margin-top: 20px ;">
+  <div class="jumbotron" style="word-break:break-all; text-align: center;">
+    <h2>SIGCOMM 2022 阅读评述（六）</h2>
+    <h4>06 Sep 2022</h4>
+  </div>
+  <div style="font-size: 16px; margin-bottom: 100px;">
+    <p>第36届 SIGCOMM 于2022年8月22日-8月26日在荷兰阿姆斯特丹召开。本次会议共收到279篇投稿，接收55篇论文，录取率为19.71%。
+SNG的同学们按照会议日程对论文内容进行了分期评述，本期介绍session7的论文。</p>
+
+<p>Session 7: Monitoring and Measurement
+Continuous In-Network Round-Trip Time Monitoring
+Satadal Sengupta, Hyojoon Kim, Jennifer Rexford (Princeton University)
+背景
+RTT（Round-trip time）对于实际应用用户体验的影响非常重大，同时记录RTT可以发现潜在的中间人攻击情况。现行RTT监控工具主要分为两类：1.发送主动探测报文；2.被动监测TCP handshake 过程中的RTT时延。前者的问题在于探测报文的RTT不能真实反映应用级别的用户体验；后者的问题在于对于长时间流的统计精确度不够。对此论文提出了一种可嵌入实际应用的、实时的、持续的RTT测量系统Dart
+设计</p>
+
+<p>图片</p>
+
+<p>如上图，Dart主要的运行场景是在与终端直接相连的网关上，其运行的基本机制是匹配SEQ和ACK序列号。每当Dart接收到一个SEQ号时，将其储存在哈希表（Packet tracker table）中；当收到相同的ACK号时，删除该号码的表项，统计往返时间。在正确性上，Dart遇到的挑战是如何处理数据包重传以及数据包失序的情况；在内存利用率方面，主要的挑战是报文丢失（SEQ被记录后收不到ACK），以及RTT时间较长的情况。对此Dart采用了两种策略：</p>
+
+<p>1：记录有效的SEQ范围。Dart会维护一个RT（Range Tracker）table，对于每一个标志TCP连接的4元组，都会记录下其SEQ number的有效范围。范围的下界为目前收到的最大的ACK号，后续再收到任何小于下界的ACK都标志出现了报文的失序（或重传）。范围的上界是目前已记录的最大SEQ号，后续再收到任何小于上界的SEQ都标志出现了失序（或重传）。对于失序的ACK，Dart会重设有效范围，将上界的值赋给下界；对于失序的SEQ，Dart则会将最大SEQ的数据包的开始位和结束位设置为下/上界。</p>
+
+<p>图片</p>
+
+<p>2：lazy eviction and Recirculation for a second chance：Dart 仅当 Packet tracker table新 表项和旧表项出现哈希值冲突时进行表项的抢占。旧表项被抢占之后会再次进入到输入队列中，通过Range Tracker table检测它是否仍然有效。仍然有效的旧表项会被重新储存到Packet tracker table中。</p>
+
+<p>图片</p>
+
+<p>性能评估：</p>
+
+<p>实验将Dart与tcptrace软件进行了比较。采用样本为校园网中1.38M个TCP连接和135.78M个TCP报文。对比显示Dart采样了更少的报文样本（82% of tcptrace）以得到同样精确的结果。</p>
+
+<p>个人观点：
+RTT测量可以真实反映用户体验，并且可以发现潜在的中间人攻击行为，具有非常高的研究价值。相比于其他测量工具，我认为Dart的优点和创新性主要体现在两个方面：1）通过RTtable的设计，Dart会主动舍弃由于失序或重传而导致的高偏差样本。2）通过旧表项的懒惰替换策略，保证时延确实很长的流不会因为Packet tracker table的更新而被排除在外。因此Dart能够采样更少量的样本，但依然维持相当高的精确性。</p>
+
+<p>FlyMon: Enabling On-the-Fly Task Reconfiguration for Network Measurement
+Hao Zheng, Chen Tian (Nanjing University), Tong Yang, Huiping Lin (Peking University), Chang Liu, Zhaochen Zhang, Wanchun Dou, Guihai Chen (Nanjing University)
+背景
+网络中多项指标的测量对于提升性能、流量工程、入侵检测等问题都具有重大意义。然而对于正在工作中的网络及测量系统，重新调度其任务安排（如新增、取消测量任务，调整分配给各任务的内存）的问题还未受到重视。受计算资源限制，将所有可能的测量任务编译好并通过开关控制是不可能的，所以当运营者需要进行调整时往往要暂停系统的运行。本文旨在设计可以在运行中重设任务的测量系统。
+设计
+FLyMon将所有计算任务视为key和attribute的组合。key是测量中流的标识（SRCIp、SRCIp/24、SRC-DST pair），而attribute 则包括频率、传输数据量等。FlyMon通过将具体任务执行和编译阶段的解耦来解决动态调整测量任务的问题。
+1.CMU(composable measurement unit)
+图片</p>
+
+<p>FLyMon 的基本计算单元为CMU，每个CMU表项包含了任务的编号、测量的key值、测量的操作、分配的内存空间。</p>
+
+<p>测量任务主要分为两个子过程：key-selection和operation selection。对于key-selection，当每一个数据包到达时，我们会从它首部可能的key的集合中选出一个key，为其动态分配一个内存空间并将地址作为operation selection的输入；对于operation selection，</p>
+
+<p>我们会通过match-action table 动态的选择一个SALU操作（相当于运算器操作）。</p>
+
+<p>2.CMUs groups</p>
+
+<p>FlyMon 会将多个CMU通过分组的方式进行统一处理。如在key-selection可以统一进行hash操作以节省计算资源；同时在operation-selection阶段采用类似流水线的方式提高资源利用率。</p>
+
+<p>3.Dynamic Memory Management</p>
+
+<p>图片</p>
+
+<p>通过TCAM-based 动态地址分配，可以将每个task分配到独属于自己的SRAM内存分区中。
+性能评估
+实验将FlyMon prototype 在 Wedge 100BF Tofino-based可编程交换机上运行，同时采用两台Intel Xeon CPU E5-2650服务器互相通信。图例中Bare为未添加测量任务时的交换机吞吐量，Static为不支持动态任务调度的吞吐量。实验表明FlyMon程序能极大节省因任务切换而损失的交换机工作时间。</p>
+
+<p>图片</p>
+
+<p>个人观点</p>
+
+<p>网络中多项指标的测量对于提升性能、流量工程、入侵检测等问题都具有重大意义。在现行网络中，如果要调整测量的具体任务或资源分配，往往需要整个网络停止工作以编译新的改动。FlyMon的主要创新在于将具体的任务执行和编译阶段解耦，每当一个数据包经过测量设备时，都会通过key-selection和operation selection两阶段对其进行地址/运算器操作的分配。在此基础上FlyMon还引入了TCAM-based动态地址分配以及流水线方式提高SALU资源利用率。因此可以在吞吐量几乎不受影响的基准上实现任务的切换。
+Predicting IPv4 Services Across All Ports
+Liz Izhikevich (Stanford University), Renata Teixeira (Inria, Paris), Zakir Durumeric (Stanford University)
+这篇文章提出了一个高效的全网扫描工具GPS，来自于斯坦福大学和法国国家信息与自动化研究所的研究。
+背景
+互联网范围的扫描使研究人员和网络运营商能够了解互联网在实践中的运作方式，但是目前没有研究能够分析整个IPV4空间内的所有端口，例如使用ZMap工具以1Gbps的速度扫描所有端口也需要5.6年，因此已有研究往往只扫描指定部分网络，不能对全网进行完整分析。GPS是第一个实现全网扫描的实际工具。
+设计</p>
+
+<p>GPS的目标是最大化程度地找到所有开启服务的端口，整体思想是从一个小的数据集上学习特征，然后基于该特征对每个IP预测可能开启服务的端口，最后发送探测数据包进行服务发现，分成以下4个步骤实现</p>
+
+<ol>
+  <li>
+    <p>种子集构建：GPS最开始没有任何网络先验知识，需要数据集用于寻找端口和服务的特征，可以使用已有数据集或重新探测网络收集。相比前有工作，GPS只需要少量的采样来构建种子集。</p>
+  </li>
+  <li>
+    <p>特征识别：GPS基于种子集建立概率模型，用于预测最有可能开启的服务与端口。该模型主要建立在应用层、传输层和网络层的联系上，例如在传输层上，一个出现的服务端口可以用来预测另外一个端口；应用层上的特征（主机制造商、操作系统类型、应用类型）可以用来预测服务是否开启；网络层上同一网络子网下的主机通常使用同一端口运行相同服务。基于这些联系，GPS在种子集上通过分析数据建立对应的概率模型。</p>
+  </li>
+  <li>
+    <p>第一个服务端口预测：在特征识别时，大多基于端口之间的联系，因此首先需要找到一个开启服务的端口作为输入进行预测。在预测第一个服务端口时，只有主机IP信息，GPS采用的方法是对最有可能开启的服务进行探测，具体做法是使用概率模型根据网络层信息预测服务端口，并基于概率从大到小进行排序，最后基于最大覆盖范围选择需要探测的端口。</p>
+  </li>
+  <li>
+    <p>预测其他服务端口：在找到第一个服务端口之后，GPS使用概率模型进行服务端口预测，并将概率低于0.00001的可能服务丢弃，直接放弃对该端口的探测，并对其他可能存在服务的端口进行探测。</p>
+  </li>
+</ol>
+
+<p>GPS的运行流程如图所示，GPS使用了Google的BigQuery 技术实现了并行计算加速，用于训练模型和服务端口预测。</p>
+
+<p>图片</p>
+
+<p>性能评估
+实验表明，相比穷举搜索，GPS找出92%的服务时带宽使用减少了131倍，找出96%服务时带宽使用减少了10倍。在考虑对网络影响最小的情况下，GPS相比穷举探测精确度高出两个数量级。与机器学习探测模型XGBoost相比，GPS可以平均减少2.3倍的宽带使用，对于预测过程，GPS相比XGBoost的预测速度，在单核情况下提升了5倍，使用BigQuery技术可以提高4个数量级。
+图片</p>
+
+<p>个人观点
+GPS的主要创新点是，提出了一个轻量级的概率模型，能够使用少量的数据集进行训练，达到较高的服务端口预测率，从而可以使用少量的带宽实现全网扫描。此外，该模型可以通过使用并行技术进行加速，以实现相比已有模型4个 数量级的效率提升。不过，该概率模型也存在一定的局限性，例如不能挖掘多个端口相互影响的模式，不能处理IPV6地址空间等。
+PrintQueue: Performance Diagnosis via Queue Measurement in the Data Plane
+Yiran Lei (Tsinghua University), Liangcheng Yu, Vincent Liu (University of Pennsylvania), Mingwei Xu (Tsinghua University)
+本文提出了一个在小的和大的时间尺度中用于追踪数据包级延迟的来源的实用数据平面验证工具PrintQueue，来自清华大学和宾夕法尼亚大学相关研究人员的研究。
+背景
+在如今的网络中，不同来源的性能问题（如Dos攻击，ECMP误配置，TCP添头）可以产生不同的影响（如丢包，SLA违规）。几乎所有的问题都归结为数据包到达目的地的时间太晚或者根本没有到达。因此，网络队列的可见性对于诊断性能问题至关重要。
+当试图确定延迟的原因时，必须要考虑整个拥塞机制，即从受害者数据包最终离开队列到队列首次开始的时间。考虑一个具有任意数据包调度算法的队列和图1中描述的数据包突发。所描述的所有数据包都至少部分应为”罪魁祸首”的排队延迟负责，而不仅仅是t=4时受害者到达时队列中的数据包.本文提出了一组用于描述拥塞机制的度量，并将整个数据包集分为三类：直接延迟罪魁祸首的数据包、间接延迟罪魁祸首的数据包和导致拥塞的数据包。
+图片</p>
+
+<p>设计
+PrintQueue利用当前可编程交换机数据/控制平面的交换机的灵活性实现用于结合和跟踪在整个拥塞机制中排队延迟的原因的两个新机制。</p>
+
+<p>对于受害者数据包，PrintQueue标识上述类型的”罪魁祸首”数据包。它进一步根据它们的的流ID聚集”罪魁祸首”，以获得每流数据包计数。数据包计数可以衡量数据流对受害者查询延迟的贡献，并为网络运营商的后续行动提供指导。</p>
+
+<p>PrintQueue的设计有一些指导思想：</p>
+
+<ol>
+  <li>为了精确地跟踪罪犯，PrintQueue应存储单个数据包及其出列时间. 2. 为了确保可扩展到无限时间范围，PrintQueue必须压缩数据包以减少开销. 3.为了优先跟踪拥塞的原始原因并有效地执行，PrintQueue应维护数据包级别的不同列表.</li>
+</ol>
+
+<p>如下图所示，现代交换机分为入口和出口数据包处理管道，其中交换机缓冲位于两者之间。虽然不同的端口可能共享缓冲区空间或相同的物理管道，但排队延迟几乎取决于每个独立出口端口上的活动。</p>
+
+<p>网络运营商首先在每个出口端口的基础上启用PrintQueue。在这些端口上，PrintQueue使用两个数据平面组件跟踪罪犯：时间窗口（用于跟踪直接和间接的“罪魁祸首”）和队列监视器（用于跟踪拥塞的原始原因）。</p>
+
+<p>在控制平面中，分析程序定期轮询和存储时间窗口和队列监视器的内容。最后，高层应用程序通过向分析程序发送请求或在数据平面出口管道中发起同步查询来查询罪犯。</p>
+
+<p>图片</p>
+
+<p>性能评估
+本文在Tofino可编程交换机上实现了PrintQueue的原型。本文首先分析了三种工作负载下的精度（即队列深度的函数），PrintQueue的准确度数值明显优于现有工作。同时与其它系统进行了对比，在所有三种工作负载下，PrintQueue的平均精度和召回率都显著高于HashPipe或FlowRadarRun。同时与与具有不同参数的相关工作、Top-K流量不同窗口的精度、控制平面精度的开销进行了对比。评估表明，PrintQueue的精度比现有的工作高出3倍，而开销保持在20倍以下。</p>
+
+<p>个人观点</p>
+
+<p>PrintQueue是第一个有效跟踪整个拥塞状态的系统，并提出了一些新的数据结构（时间窗口、队列监控器）和度量来描述拥塞状态，并将相关的数据包进行分类。它能够在有限的开销下保持高精确度，解决了以前流量测量和队列监测问题中的局限性。
+Retina: Analyzing 100 GbE Traffic on Commodity Hardware</p>
+
+<p>Gerry Wan, Fengchen Gong (Stanford University), Tom Barbette (UCLouvain), Zakir Durumeric (Stanford University)</p>
+
+<p>这篇文章提出了Retina，一种高效的流量分析工具，允许用户使用普通服务器分析超过100Gbps流速的流量数据。与GPS一样，该研究来自于斯坦福大学Zakir Durumeric教授带领的ESRG团队。</p>
+
+<p>背景</p>
+
+<p>在过去的几年里，网络速度已经增长到 100+ Gbps，超过了传统分析工具的性能。已有研究提出了一些解决方案，但在性能和易用性之间仍然存在权衡。例如，快速的数据包处理系统通常需要限制分析的流量速度，或者需要特定的硬件设置，或仅限于固定的分析功能。因此，本文旨在提出一种技术，既能够高效分析高速流量，又提供接口给用户以简单编写分析功能
+设计
+整体上，Retina给用户提供了Rust语言接口定义分析功能，然后通过丢弃分析范围外的流量以及惰性分析操作提升了性能，主要有以下三个部分</p>
+
+<ol>
+  <li>
+    <p>用户接口：用户可以使用Rust语言定义流量过滤范围和回调函数，过滤范围允许用户指定分析的流量类型，回调函数允许用户编写任意的分析功能代码。</p>
+  </li>
+  <li>
+    <p>过滤功能分解：Retina通过将用户定义的过滤功能分解成了四个负责不同模式匹配的过滤模块：硬件过滤、软件数据包过滤、连接过滤、应用层会话过滤，通过尽早尽频繁地过滤丢弃不需要的流量和连接状态来显著提高性能。其中，Retina将过滤表达式使用谓词树表示，然后将各个节点匹配到对应过滤模块。</p>
+  </li>
+  <li>
+    <p>数据重组：在收到原始数据包之后，Retina使用不同过滤模块对原始数据进行过滤，最后需要将各个模块过滤后的数据包输入给回调函数分析。其中，Retina将数据包分成了两种情况分开进行处理，一种是无状态数据包，一种是有状态数据包。对于无状态数据包，数据包不需要进行流重组，因此直接将通过过滤的数据包输入到回调函数中进行分析。对于有状态数据包，则需要将属于同一个流的数据包进行重组，Retina使用哈希表和计时器管理连接状态、设置小型缓冲区以及使用快速重排序节省流重组时间与内存、基于状态机删除不必要的连接从而避免不必要的解析或数据组装。可以看到，Retina是惰性的，在确定数据段满足过滤要求之前，避免对这些数据进行冗余复制、重组和解析，从而提高分析性能。</p>
+  </li>
+</ol>
+
+<p>Retina整体运行架构如图所示，可以看到，用户定义的过滤函数经过解析后被输入到了4个不同的过滤器中，最后将通过过滤器的数据包提供给回调函数进行分析。</p>
+
+<p>图片</p>
+
+<p>性能评估</p>
+
+<p>对于吞吐量，Retina在三种不同过滤情况下进行实验，如图所示，Retina仅需要8个内核即就可以分析所有 TLS 握手，且入口流量速率超过 160 Gbps。相比已有的网络监控系统，Retina能够处理相比5-100倍的流量速率。对于Retina提出的过滤功能分解和惰性数据重组操作，实验结果显示两种方法显著提升了数据包处理效率。对于有状态数据包的分析，Retina可以使用较少的内存实现分析。此外，文中给出案例分析了Retina 的易用性，用户只需要少量代码即可实现大规模网络流量的复杂问题分析，例如调查加密异常、IP 匿名化、提取流量特征等。
+图片</p>
+
+<p>个人观点
+Retina的主要创新点在于，使用了提前丢弃、惰性处理的方法以最小化流量分析所需要的分析工作量，且通过使用Rust语言为用户提供了一种高表达性且易用的开发语言，同时解决了性能和易用性的问题。</p>
+
+<p>版权声明和个人见解说明</p>
+
+<p>本文中所有的图片截取自论文正文，版权属于作者与ACM。</p>
+
+<p>对每篇论文的“个人观点”仅仅是一人之见，希望能抛砖引玉，请大家多多发表意见。</p>
+
+
+  </div>
+  
+</div>
+
+
+  </body>
+</html>

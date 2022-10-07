@@ -1,0 +1,19 @@
+---
+layout: default
+title: News
+---
+{% include title.html %}
+
+<div class="container" style="margin-bottom: 50px;">
+  <div class="row" style="word-break:break-all; margin-left: 0px; margin-right: 0px;" >
+
+    {% for post in site.posts %}
+        <div class="col-lg-12 paper-item" onclick="window.open('{{ post.url }}','_self')" style="cursor:pointer">
+            <h4>{{post.title}}</h4> 
+            <h6>{{ post.date | date_to_string }}</h6>
+            <h6>{{ post.excerpt }}</h6>
+        </div>
+    {% endfor %}
+  </div>
+</div>
+

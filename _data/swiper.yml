@@ -1,0 +1,11 @@
+- swiperImg: /assets/images/swiper.jpeg
+  title: "Title 1"
+  active: true
+
+- swiperImg: /assets/images/swiper.jpeg
+  title: "Title 2"
+  active: false
+
+- swiperImg: /assets/images/swiper.jpeg
+  title: "Title 3"
+  active: false

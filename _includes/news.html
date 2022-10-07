@@ -1,0 +1,32 @@
+<div class="row" style="word-break:break-all; margin-right: 2px; margin-left: 2px;">
+  <div class="col-lg-12" style="word-break:normal;">
+      <h1>News</h1>
+  </div>  
+  {% for post in site.posts limit:10 %}
+      <div class="col-lg-12 news-item" onclick="window.open('{{ post.url }}','_self')" style="cursor:pointer">
+
+        <div class="row " style="word-break:normal;">
+          <div class="col-lg-2  col-xs-2 news-time">
+            <h4>{{ post.date | date: "%Y" }}</h4>
+            <h5>{{ post.date | date: "%m-%d"}}</h5>
+          </div>
+          <div class="col-lg-8 col-xs-8 news-content">
+            <h4>{{post.title}}</h4> 
+            <h6>{{ post.excerpt }}</h6>
+          </div>
+          <div class="col-lg-2 col-xs-2 news-hover-img">
+            {% if post.coverImg %}
+              <img src="{{post.coverImg}}" class="news-img img-rounded img-responsive">
+            {% else %}
+              <img src="/assets/images/news_img1.png" class="news-img img-rounded img-responsive">
+            {% endif %}
+            
+          </div>
+        </div>
+      </div>
+  {% endfor %}
+
+  <div class="col-lg-12" style="word-break:normal;">
+    <a type="button" class="btn btn-default btn-lg btn-block" href="/news.html">More</a>
+  </div> 
+</div>

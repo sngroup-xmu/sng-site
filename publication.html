@@ -1,0 +1,49 @@
+---
+layout: default
+title: Publication
+---
+{% include title.html %}
+
+<div class="container" style="margin-bottom: 50px;">
+    <div class="row" style="word-break:break-all; margin-left: 0px; margin-right: 0px;">
+        
+        <div class="col-lg-12" style="word-break:break-all;">
+            <h2>2022</h2>
+        </div>
+        {% for item in site.data.paper %}
+            {% if item.time == 2022 %}
+            <div class="col-lg-12 paper-item">
+                <h4>{{item.title}}</h4> 
+                <h5>{{item.authors}} </h5>
+                <a href="{{item.link}}">This is a link.</a>
+            </div>
+            {% endif %}
+        {% endfor %}
+
+        <div class="col-lg-12" style="word-break:break-all;">
+            <h2>2021</h2>
+        </div>  
+        {% for item in site.data.paper %}
+            {% if item.time == 2021 %}
+            <div class="col-lg-12 paper-item">
+                <h4>{{item.title}}</h4> 
+                <h5>{{item.authors}} </h5>
+                <a href="{{item.link}}">This is a link.</a>
+            </div>
+            {% endif %}
+        {% endfor %}
+
+        <div class="col-lg-12" style="word-break:break-all;">
+            <h2>2020</h2>
+        </div>  
+        {% for item in site.data.paper %}
+            {% if item.time == 2020 %}
+            <div class="col-lg-12 paper-item">
+                <h4>{{item.title}}</h4> 
+                <h5>{{item.authors}} </h5>
+                <a href="{{item.link}}">This is a link.</a>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

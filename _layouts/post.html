@@ -1,0 +1,26 @@
+---
+layout: default
+---
+<!-- <h1>{{ page.title }}</h1>
+
+<p>
+  {{ page.date | date_to_string }}
+  {% assign author = site.authors | where: 'short_name', page.author | first %}
+  {% if author %}
+    - <a href="{{ author.url }}">{{ author.name }}</a>
+  {% endif %}
+</p> -->
+
+
+
+<div class="container" style="margin-top: 20px ;">
+  <div class="jumbotron" style="word-break:break-all; text-align: center;">
+    <h2>{{ page.title }}</h2>
+    <h4>{{ page.date | date_to_string }}</h4>
+  </div>
+  <div style="font-size: 16px; margin-bottom: 100px;">
+    {{ content }}
+  </div>
+  
+</div>
+

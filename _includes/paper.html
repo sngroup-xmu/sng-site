@@ -1,0 +1,17 @@
+<div class="row" style=" margin-right: 2px; margin-left: 2px; word-break:normal;">
+    <div class="col-lg-12" style="word-break:normal;">
+        <h1>Paper</h1>
+    </div>  
+    {% for item in site.data.paper limit:10 %}
+        {% if item.display == 1 %}
+        <div class="col-lg-12 paper-item" style="word-break:normal;">
+            <h4>{{item.title}}</h4> 
+            <h5>{{item.authors}} </h5>
+            <a href="{{item.link}}">PDF</a>
+        </div>
+        {% endif %}
+    {% endfor %}
+    <div class="col-lg-12" style="word-break:normal;">
+        <a type="button" class="btn btn-default btn-lg btn-block" href="/publication.html">More Papers</a>
+    </div> 
+</div>
