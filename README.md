@@ -309,7 +309,7 @@ sortWeight: 1
 homePage: 
 email: 123456789@xx.com
 ResearchFields: Direction1 Direction2 Direction3
-avatarUrl: /assets/images/SanZhang.jpeg
+avatarUrl: /assets/images/peopleImg/SanZhang.jpeg
 ---
 
 ### 爱好
@@ -329,7 +329,7 @@ avatarUrl: /assets/images/SanZhang.jpeg
 
 那么 `张三` 的个人主页将会渲染成如下样式：
 
-![](/assets/images/otherImg/SanZhangDemo.png)
+![](assets/images/otherImg/SanZhangDemo.png)
 
 ## 6. 新增一个研究方向
 
