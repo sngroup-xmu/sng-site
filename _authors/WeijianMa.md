@@ -6,5 +6,5 @@ sortWeight: 2
 homePage: 
 email: weijian.ma.xmu@gmail.com
 ResearchFields: 
-avatarUrl: 
+avatarUrl: \assets\images\peopleImg\WeijianMa.jpg
 ---
