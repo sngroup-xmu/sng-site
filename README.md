@@ -296,7 +296,7 @@ avatarUrl: /assets/images/peopleImg/SanZhang.png
 | homePage        | 主页链接，如果你没有个人主页，那么次页面将会渲染成你的个人主页（样式见下方图片） | 选填|
 | email        | 邮箱地址| 选填|
 | ResearchFields        | 研究领域| 选填|
-| avatarUrl        | 个人照片| 暂时必填|
+| avatarUrl        | 个人照片，如果是网络图片，直接填路径即可。如果是本地图片，需要将本地图片存放在 `/assets/images/peopleImg/`，并将图片命名为你的名字。照片最好是一寸证件照或者和一寸证件照尺寸比例一样的其他照片。| 暂时必填|
 
 
 如果 `SanZhang.md` 的内容如下：
