@@ -6,5 +6,5 @@ sortWeight: 2
 homePage: http://mwj2000.cc/
 email: weijian.ma.xmu@gmail.com
 ResearchFields: Programmable network; FPGA
-avatarUrl: \assets\images\peopleImg\WeijianMa.jpg
+avatarUrl: /assets/images/peopleImg/WeijianMa.jpg
 ---
