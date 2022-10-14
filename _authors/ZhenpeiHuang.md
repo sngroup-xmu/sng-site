@@ -6,7 +6,7 @@ sortWeight: 1
 homePage: 
 email: zhenpeihuang99@gmail.com
 ResearchFields: Network programming
-avatarUrl: /assets/images/peopleImg/ZhenpeiHuang.png
+avatarUrl: /assets/images/peopleImg/ZhenpeiHuang.jpg
 ---
 
 

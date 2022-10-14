@@ -106,3 +106,17 @@
     height: 100%;
     object-fit:cover;
 } */
+
+.img-cover{
+
+}
+
+.img-cur{
+    height: 200px; 
+    width: auto;
+}
+
+.img-cur:hover{
+    transform: scale(1.05);
+}
+

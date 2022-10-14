@@ -4,15 +4,6 @@ title: People
 ---
 {% include title.html %}
 
-<!-- <ul>
-  {% for author in site.authors %}
-    <li>
-        <h2><a href="{{ author.url }}">{{ author.name }}</a></h2>
-        <h3>{{ author.type }}</h3>
-    </li>
-  {% endfor %}
-</ul> -->
-
 <div class="container">
   <div class="row" style="word-break:normal;">
 
@@ -27,8 +18,11 @@ title: People
 
           {% if author.sortWeight == i %}
 
-            <div class="col-lg-2 col-xs-3" style="word-break:normal; margin-bottom: 20px;">
-              <img src="{{author.avatarUrl}}" class="img-rounded img-responsive" >
+          <div class="col-lg-2 col-xs-3" style="word-break:break-all; margin-bottom: 20px;">
+            <div class="row" style="word-break:normal; text-align: center;">
+              <p style="text-align: center;">
+                <img src="{{author.avatarUrl}}" class="img-rounded img-cur">
+              </p>
               <div style="text-align: center;">
                 <h4>{{author.name}}</h4>
                 {% if author.homePage %}
@@ -37,8 +31,8 @@ title: People
                 <a type="button" class="btn btn-default btn-xs" href="{{author.url}}">Home Page</a>
                 {% endif %}
               </div>
-              
-            </div>  
+            </div>
+          </div> 
 
           {% endif %}
 
@@ -65,8 +59,11 @@ title: People
 
           {% if author.sortWeight == i %}
 
-            <div class="col-lg-2 col-xs-3" style="word-break:break-all; margin-bottom: 20px;">
-              <img src="{{author.avatarUrl}}" class="img-rounded img-responsive" >
+          <div class="col-lg-2 col-xs-3" style="word-break:break-all; margin-bottom: 20px;">
+            <div class="row" style="word-break:normal; text-align: center;">
+              <p style="text-align: center;">
+                <img src="{{author.avatarUrl}}" class="img-rounded img-cur">
+              </p>
               <div style="text-align: center;">
                 <h4>{{author.name}}</h4>
                 {% if author.homePage %}
@@ -75,8 +72,8 @@ title: People
                 <a type="button" class="btn btn-default btn-xs" href="{{author.url}}">Home Page</a>
                 {% endif %}
               </div>
-              
-            </div>    
+            </div>
+          </div> 
 
           {% endif %}
 
@@ -87,32 +84,6 @@ title: People
     {% endfor %}
   </div>
 </div>
-
-<!-- <div class="container"> -->
-  <!-- <div class="row" style="word-break:break-all;">
-
-    <div class="col-lg-12" style="word-break:break-all; margin-bottom: 10px; margin-top: 15px;">
-      <h2>PhD</h2>
-    </div> 
-    {% for author in site.authors %}
-
-    {% if author.type == "PhD" %}
-    <div class="col-lg-2 col-xs-3" style="word-break:break-all; margin-bottom: 20px;">
-      <img src="{{author.avatarUrl}}" class="img-rounded img-responsive" >
-      <div style="text-align: center;">
-        <h4>{{author.name}}</h4>
-        {% if author.homePage %}
-        <a type="button" class="btn btn-default btn-xs" href="{{author.homePage}}">Home Page</a>
-        {% else %}
-        <a type="button" class="btn btn-default btn-xs" href="{{author.url}}">Home Page</a>
-        {% endif %}
-      </div>
-      
-    </div>  
-    {%endif%}
-    {% endfor %}
-  </div>
-</div> -->
 
 
 <div class="container">
@@ -130,16 +101,23 @@ title: People
           {% if author.sortWeight == i %}
 
             <div class="col-lg-2 col-xs-3" style="word-break:break-all; margin-bottom: 20px;">
-              <img src="{{author.avatarUrl}}" class="img-rounded img-responsive" >
-              <div style="text-align: center;">
-                <h4>{{author.name}}</h4>
-                {% if author.homePage %}
-                <a type="button" class="btn btn-default btn-xs" href="{{author.homePage}}">Home Page</a>
-                {% else %}
-                <a type="button" class="btn btn-default btn-xs" href="{{author.url}}">Home Page</a>
-                {% endif %}
+              <div class="row" style="word-break:normal; text-align: center;">
+                <p style="text-align: center;">
+                  {% if author.avatarUrl %}
+                  <img src="{{author.avatarUrl}}" class="img-rounded img-cur">
+                  {% else %}
+                  <img src="/assets/images/peopleImg/default.jpeg" class="img-rounded img-cur">
+                  {% endif %}
+                </p>
+                <div style="text-align: center;">
+                  <h4>{{author.name}}</h4>
+                  {% if author.homePage %}
+                  <a type="button" class="btn btn-default btn-xs" href="{{author.homePage}}">Home Page</a>
+                  {% else %}
+                  <a type="button" class="btn btn-default btn-xs" href="{{author.url}}">Home Page</a>
+                  {% endif %}
+                </div>
               </div>
-              
             </div> 
 
           {% endif %}
@@ -151,31 +129,3 @@ title: People
     {% endfor %}
   </div>
 </div>
-
-<!-- <div class="container">
-  <div class="row" style="word-break:break-all;">
-
-    <div class="col-lg-12" style="word-break:break-all; margin-bottom: 10px; margin-top: 15px;">
-      <h2>Master</h2>
-    </div> 
-    {% for author in site.authors %}
-
-    {% if author.type == "Master" %}
-    <div class="col-lg-2 col-xs-3" style="word-break:break-all; margin-bottom: 20px;">
-      <img src="{{author.avatarUrl}}" class="img-rounded img-responsive" >
-      <div style="text-align: center;">
-        <h4>{{author.name}}</h4>
-        {% if author.homePage %}
-        <a type="button" class="btn btn-default btn-xs" href="{{author.homePage}}">Home Page</a>
-        {% else %}
-        <a type="button" class="btn btn-default btn-xs" href="{{author.url}}">Home Page</a>
-        {% endif %}
-      </div>
-      
-    </div>  
-    {%endif%}
-    {% endfor %}
-  </div>
-</div>
-
-<div style="margin: 50px;"></div> -->

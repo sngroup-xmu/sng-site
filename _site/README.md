@@ -270,17 +270,18 @@ coverImg: /assets/images/news_img1.png
 
 ## 5. 新增一位成员
 
-加入你要新增一位名为 `张三` 的成员，这时你需要进入 `_authors` 文件夹并创建一个 `Markdown` 文件，命名为 `SanZhang.md`，在该文件中添加如下头信息：
+假如你要新增一位名为 `张三` 的成员，这时你需要进入 `_authors` 文件夹并创建一个 `Markdown` 文件，命名为 `SanZhang.md`，在该文件中添加如下头信息：
 
 ```yml
 ---
 name: San Zhang 
 type: Master
+startYear: 2021
 sortWeight: 1
 homePage: 
 email: 123456789@xx.com
 ResearchFields: Direction1 Direction2 Direction3
-avatarUrl: /assets/images/otherImg/SanZhangDemo.png
+avatarUrl: /assets/images/peopleImg/SanZhang.png
 ---
 ```
 
@@ -292,10 +293,10 @@ avatarUrl: /assets/images/otherImg/SanZhangDemo.png
 | type        | 成员类型，一共三种类型：Faculty PhD Master，分别代表导师、博士生、硕士生| 必填|
 | startYear        | 入学年份| 选填|
 | sortWeight        | 排序权重，范围：1-50，数值越小越靠前| 必填|
-| homePage        | 主页链接，如果你没有个人主页，那么次页面将会渲染成你的个人主页（样式见下方图片） | 选填|
+| homePage        | 主页链接，如果你没有个人主页，那么此页面将会渲染成你的个人主页（样式见下方图片） | 选填|
 | email        | 邮箱地址| 选填|
 | ResearchFields        | 研究领域| 选填|
-| avatarUrl        | 个人照片| 暂时必填|
+| avatarUrl        | 个人照片，如果是网络图片，直接填路径即可。如果是本地图片，需要将本地图片存放在 `/assets/images/peopleImg/`，并将图片命名为你的名字。照片最好是一寸证件照或者和一寸证件照尺寸比例一样的其他照片。| 暂时必填|
 
 
 如果 `SanZhang.md` 的内容如下：
@@ -309,7 +310,7 @@ sortWeight: 1
 homePage: 
 email: 123456789@xx.com
 ResearchFields: Direction1 Direction2 Direction3
-avatarUrl: /assets/images/SanZhang.jpeg
+avatarUrl: /assets/images/peopleImg/SanZhang.jpeg
 ---
 
 ### 爱好
@@ -329,7 +330,7 @@ avatarUrl: /assets/images/SanZhang.jpeg
 
 那么 `张三` 的个人主页将会渲染成如下样式：
 
-![](assets/images/SanZhangDemo.png)
+![](/assets/images/otherImg/SanZhangDemo.png)
 
 ## 6. 新增一个研究方向
 
