@@ -20,7 +20,12 @@ layout: default
   <div class="row" style="word-break:break-all;">
 
     <div class="col-lg-2 col-xs-4" style="word-break:break-all; margin-bottom: 10px; margin-top: 15px;">
-      <img src="{{page.avatarUrl}}" class="img-rounded img-responsive" >
+      <!-- <img src="{{page.avatarUrl}}" class="img-rounded img-responsive" > -->
+      {% if author.avatarUrl %}
+      <img src="{{page.avatarUrl}}" class="img-rounded img-responsive">
+      {% else %}
+      <img src="/assets/images/peopleImg/default.jpeg" class="img-rounded img-responsive">
+      {% endif %}
     </div> 
     <div class="col-lg-10 col-xs-8" style="word-break:break-all; margin-bottom: 10px; margin-top: 15px;">
       <h3>Name: {{ page.name }}</h3>
