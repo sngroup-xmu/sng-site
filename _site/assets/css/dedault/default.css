@@ -93,7 +93,8 @@
 }
 
 .news-img{
-    width:100%;
+    height: auto;
+    width:180px;
     text-align: center;
     overflow:hidden;
     /* border-radius: 0px; */
@@ -107,9 +108,6 @@
     object-fit:cover;
 } */
 
-.img-cover{
-
-}
 
 .img-cur{
     height: 200px; 
