@@ -9,4 +9,9 @@
   display: 1
   authors: Yuxin Wang, Qiao Xiang, Jiwu Shu, Geng Li, Linghe Kong
   link: https://dl.acm.org/doi/abs/10.1145/3538401.3546600
-  
+
+- title: "Switch as a Verifier: Toward Scalable Data Plane Checking via Distributed, On-Device Verification"
+  time: 2022
+  display: 1
+  authors: Qiao Xiang, Ridi Wen, Chenyang Huang, Yuxin Wang, Franck Le
+  link: https://arxiv.org/abs/2205.07808
